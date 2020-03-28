@@ -139,20 +139,17 @@ function* rebuild_connections(manager) {
 
 function* scan(manager) {
   const scan_channel = yield eventChannel(emit => {
-    manager.startDeviceScan(
-      [ble_uuids.service.uuid],
-      {allowDuplicates: true},
-      (error, device) => {
-        if (error) {
-          console.log('Error in device scan: ', JSON.stringify(error));
-          emit(END);
-        }
+    manager.startDeviceScan(null, {allowDuplicates: true}, (error, device) => {
+      if (error) {
+        console.log('Error in device scan: ', JSON.stringify(error));
+        emit(END);
+      }
 
-        if (device) {
-          emit(device);
-        }
-      },
-    );
+      if (device) {
+        manager.stopDeviceScan();
+        emit(device);
+      }
+    });
 
     return () => {
       // manager.stopDeviceScan();

@@ -7,7 +7,7 @@ import Device_Item from './Device_Item';
 
 function Home_Screen({navigation}) {
   const known_devices = useSelector(
-    state => state.device_reducer.known_devices,
+    state => state.device_reducer.unknown_devices,
   );
   const dispatch = useDispatch();
   const call_clear_unknown_devices = () =>
