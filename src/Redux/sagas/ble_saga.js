@@ -141,7 +141,7 @@ function* scan(manager) {
     });
 
     return () => {
-      // manager.stopDeviceScan();
+      manager.stopDeviceScan();
       console.log('Stopping Device Scan');
     };
   });
