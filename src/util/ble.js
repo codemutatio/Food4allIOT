@@ -1,14 +1,5 @@
 import {BleErrorCode} from 'react-native-ble-plx';
-import {eventChannel, END} from 'redux-saga';
-import {
-  fork,
-  take,
-  put,
-  spawn,
-  select,
-  cancel,
-  cancelled,
-} from 'redux-saga/effects';
+import {put} from 'redux-saga/effects';
 
 const get_known_devices = async (manager, device_id_list) => {
   const devices = await manager
@@ -19,20 +10,6 @@ const get_known_devices = async (manager, device_id_list) => {
     })
     .catch(error => {
       console.log('Error getting devices: ', error);
-    });
-  return devices;
-};
-
-// Maybe using uuid, i use this to check if they are
-// currently connected to the system??
-const devices_connected_to_system = async (manager, uuid_list) => {
-  const devices = await manager
-    .connectedDevices(uuid_list)
-    .then(_devices => {
-      return _devices;
-    })
-    .catch(error => {
-      console.log('Error getting devices connected to system: ', error);
     });
   return devices;
 };
@@ -119,7 +96,6 @@ function restore_state_function(restoredState) {
 
 module.exports = {
   get_known_devices,
-  devices_connected_to_system,
   connect_to_device,
   cancel_device_connection,
   discover_device_services_and_characteristics,

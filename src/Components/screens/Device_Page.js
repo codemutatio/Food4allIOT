@@ -4,7 +4,7 @@ import styles from '../../styles/styles';
 import {useDispatch} from 'react-redux';
 import device_actions from '../../Redux/actions/device_actions';
 
-function Device_Page({navigation, route}) {
+const Device_Page = ({navigation, route}) => {
   const dispatch = useDispatch();
   const remove_device_call = device =>
     dispatch(device_actions.remove_device(device));
@@ -46,6 +46,6 @@ function Device_Page({navigation, route}) {
       </View>
     </View>
   );
-}
+};
 
 export default Device_Page;

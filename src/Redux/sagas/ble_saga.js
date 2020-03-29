@@ -10,14 +10,11 @@ import {
   cancelled,
 } from 'redux-saga/effects';
 import {eventChannel, END} from 'redux-saga';
-import ble_uuids from '../../config/ble_uuids';
 import {
   get_known_devices,
-  devices_connected_to_system,
   connect_to_device,
   cancel_device_connection,
   discover_device_services_and_characteristics,
-  check_device_connection,
   perform_device_transaction,
   restore_state_identifier,
   restore_state_function,
@@ -98,15 +95,7 @@ function* ble_activity_helpers() {
 
 function* rebuild_connections(manager) {
   console.log('Rebuild connections.');
-  // APPEARS TO HELP REBUILD IOS CONNECTIONS
-  const service_list = [ble_uuids.service.uuid];
-  const devices_in_system = yield devices_connected_to_system(
-    manager,
-    service_list,
-  );
-  console.log('Connected devices: ', devices_in_system);
 
-  // APPEARS TO HELP REBUILD ANDROID CONNECTIONS
   const known_device_id_list = [];
   const known_devices_list = yield select(
     state => state.device_reducer.known_devices,
@@ -266,9 +255,6 @@ function* monitor_device_disconnection(manager, device) {
 
   try {
     while (true) {
-      // Note: we could post the disconnected_from_device_action here, or in the finally.
-      // Note: we must have something in the while (true) {}; otherwise,
-      // saga gets paused (because nothing to iterate to)
       let disconnected = yield take(device_disconnect_channel);
     }
   } finally {
@@ -292,7 +278,6 @@ function* handle_device_interactions(manager, device) {
 
   try {
     while (true) {
-      let timed = yield take(transfer_timer_channel);
       yield perform_device_transaction(manager, device.id);
     }
   } finally {

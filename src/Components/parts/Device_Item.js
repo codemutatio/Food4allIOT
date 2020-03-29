@@ -3,7 +3,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import styles from '../../styles/styles';
 import {useNavigation} from '@react-navigation/native';
 
-function Device_Item({device}) {
+const Device_Item = ({device}) => {
   const navigation = useNavigation();
 
   const go_to_device_page = () => {
@@ -29,6 +29,6 @@ function Device_Item({device}) {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 export default Device_Item;

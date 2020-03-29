@@ -1,19 +1,5 @@
-import DEVICE_ACTIONS from '../actions/device_actions';
 import * as TYPES from '../types/index';
 
-/*
-
-state = {known: [], unknown: []}
-
-Device:
-{
-  name: string,
-  id: string,
-  connected: boolean,
-  association: string,
-}
-
-*/
 const initialState = {
   known_devices: [],
   unknown_devices: [],
@@ -22,7 +8,6 @@ const initialState = {
 export const device_reducer = (state = initialState, action) => {
   switch (action.type) {
     case TYPES.ADD_DEVICE: {
-      // return [...state, action.device];
       return {
         known_devices: [...state.known_devices, action.device],
         unknown_devices: state.unknown_devices,
@@ -37,7 +22,6 @@ export const device_reducer = (state = initialState, action) => {
     }
 
     case TYPES.REMOVE_DEVICE: {
-      // return state.filter(item => item.name !== action.device.name);
       return {
         known_devices: state.known_devices.filter(
           item => item.name !== action.device.name,
@@ -79,11 +63,6 @@ export const device_reducer = (state = initialState, action) => {
 
       return {
         known_devices: connection_updated,
-        // known_devices: state.known_devices.map(
-        //   item => item.name === action.device.name ?
-        //   item.connected = true :
-        //   item.connected = item.connected
-        // ),
         unknown_devices: state.unknown_devices,
       };
     }
@@ -106,11 +85,6 @@ export const device_reducer = (state = initialState, action) => {
 
       return {
         known_devices: connection_updated,
-        // known_devices: state.known_devices.map(
-        //   item => item.name === action.device.name ?
-        //   item.connected = false :
-        //   item.connected = item.connected
-        // ),
         unknown_devices: state.unknown_devices,
       };
     }

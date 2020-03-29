@@ -16,7 +16,7 @@ function Device_Item({device}) {
       <TouchableOpacity
         style={{flexDirection: 'row', justifyContent: 'space-between'}}
         onPress={go_to_device_page}>
-        <Text> {device.name} </Text>
+        <Text> {device.id} </Text>
         <Text
           style={{
             backgroundColor: device.connected ? '#9ce66e' : '#c73e32',

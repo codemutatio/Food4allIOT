@@ -7,18 +7,6 @@ export function* realm_saga() {
   const realm = yield Realm.open({
     schema: [Device_Schema],
     schemaVersion: schema_version,
-    // migration: (old_realm, new_realm) => {
-    // only apply this change if upgrading to schemaVersion 1
-    // if (old_realm.schemaVersion < schema_version) {
-    // const old_objects = old_realm.objects('User');
-    // const new_objects = new_realm.objects('User');
-
-    // loop through all objects and set the name property in the new schema
-    // for (let i = 0; i < old_objects.length; i++) {
-    // new_objects[i].name = old_objects[i].firstName + ' ' + old_objects[i].lastName;
-    // }
-    // }
-    // }
   }).then(ret_realm => {
     return ret_realm;
   });
