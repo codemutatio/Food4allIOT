@@ -28,7 +28,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[<img src="image\HomePage.png" alt="homepage" >]
+[<img src="image\Home.png" alt="homepage" >]
 
 A Scanner for BLE devices
 
