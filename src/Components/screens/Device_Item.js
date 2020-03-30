@@ -3,7 +3,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import styles from '../../styles/styles';
 import {useNavigation} from '@react-navigation/native';
 
-function Device_Item({device}) {
+const Device_Item = ({device}) => {
   const navigation = useNavigation();
 
   const go_to_device_page = () => {
@@ -16,7 +16,7 @@ function Device_Item({device}) {
       <TouchableOpacity
         style={{flexDirection: 'row', justifyContent: 'space-between'}}
         onPress={go_to_device_page}>
-        <Text> {device.id} </Text>
+        <Text> {device.name} </Text>
         <Text
           style={{
             backgroundColor: device.connected ? '#9ce66e' : '#c73e32',
@@ -29,6 +29,6 @@ function Device_Item({device}) {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 export default Device_Item;
