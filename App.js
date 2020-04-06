@@ -6,13 +6,17 @@
  * @flow
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import MainNavigator from './src/Navigation/MainNavigation';
+import SplashScreen from 'react-native-splash-screen';
 
 import {Provider} from 'react-redux';
 import store from './src/Redux/store';
 
 const App = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  });
   return (
     <Provider store={store}>
       <MainNavigator />

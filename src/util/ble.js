@@ -1,93 +1,109 @@
 import {BleErrorCode} from 'react-native-ble-plx';
 import {put} from 'redux-saga/effects';
 
-const get_known_devices = async (manager, device_id_list) => {
-  const devices = await manager
-    .devices(device_id_list)
-    .then(_devices => {
-      // console.log('Returned devices: ', _devices);
-      return _devices;
-    })
-    .catch(error => {
-      console.log('Error getting devices: ', error);
-    });
-  return devices;
+const getKnownDevices = async (manager, deviceIdList) => {
+  try {
+    const devices = await manager.devices(deviceIdList);
+    return devices;
+  } catch (error) {
+    console.log('Error getting devices: ', error);
+  }
 };
 
-const connect_to_device = async (manager, device_id) => {
-  const connected = await manager
-    .connectToDevice(device_id)
-    .then(device => {
+// Maybe using uuid, i use this to check if they are
+// currently connected to the system??
+const devicesConnectedToSystem = async (manager, uuidList) => {
+  try {
+    const devices = await manager.connectedDevices(uuidList);
+    return devices;
+  } catch (error) {
+    console.log('Error getting devices connected to system: ', error);
+  }
+};
+
+const connectToDevice = async (manager, deviceId) => {
+  try {
+    const connected = await manager.connectToDevice(deviceId);
+    if (connected) {
+      return connected;
+    }
+  } catch (error) {
+    console.log('Error connecting to device: ', JSON.stringify(error));
+    if (error.errorCode === BleErrorCode.DeviceAlreadyConnected) {
+      console.log('Device was already connected');
       return true;
-    })
-    .catch(error => {
-      console.log('Error connecting to device: ', JSON.stringify(error));
-      if (error.errorCode === BleErrorCode.DeviceAlreadyConnected) {
-        console.log('Device was already connected');
-        return true;
-      }
-    });
-  return connected;
+    }
+  }
 };
 
-const cancel_device_connection = async (manager, device_id) => {
-  const disconnected = await manager
-    .cancelDeviceConnection(device_id)
-    .then(device => {
+const cancelDeviceConnection = async (manager, deviceId) => {
+  try {
+    const disconnected = await manager.cancelDeviceConnection(deviceId);
+    if (disconnected) {
       return true;
-    })
-    .catch(error => {
-      console.log('Error disconnecting from device: ', error);
-    });
-  return disconnected;
+    }
+  } catch (error) {
+    console.log('Error disconnecting from device: ', error);
+  }
 };
 
-const discover_device_services_and_characteristics = async (
-  manager,
-  device_id,
-) => {
-  const discovered = await manager
-    .discoverAllServicesAndCharacteristicsForDevice(device_id)
-    .then(device => {
+const discoverDeviceServicesAndCharacteristics = async (manager, deviceId) => {
+  try {
+    const discovered = await manager.discoverAllServicesAndCharacteristicsForDevice(
+      deviceId,
+    );
+    if (discovered) {
       console.log(
         'Discovered services and characteristics for device: ',
-        device_id,
+        deviceId,
       );
       return true;
-    })
-    .catch(error => {
-      console.log('Error discovering services and characteristics: ', error);
-    });
-  return discovered;
+    }
+  } catch (error) {
+    console.log('Error discovering services and characteristics: ', error);
+  }
 };
 
-const check_device_connection = async (manager, device_id) => {
-  const connected = await manager
-    .isDeviceConnected(device_id)
-    .then(_device => {
-      console.log('is device connected: ', _device);
-      return _device;
-    })
-    .catch(error => {
-      console.log('Error checking device connection: ', error);
-    });
-  return connected;
+const checkDeviceConnection = async (manager, deviceId) => {
+  try {
+    const connected = await manager.isDeviceConnected(deviceId);
+    if (connected) {
+      console.log('is device connected: ', connected);
+      return connected;
+    }
+  } catch (error) {
+    console.log('Error checking device connection: ', error);
+  }
 };
 
-const perform_device_transaction = async (manager, device_id) => {
-  console.log(
-    'This is when a transaction would be performed for device: ',
-    device_id,
-  );
+const checkServices = async (manager, deviceId) => {
+  try {
+    const services = await manager.servicesForDevice(deviceId);
+    if (services) {
+      console.log('is device connected: ', services);
+      return services;
+    }
+  } catch (error) {
+    console.log('Error checking device connection: ', error);
+  }
 };
 
-const restore_state_identifier = 'ble_manager';
+const performDeviceTransaction = async (manager, deviceId) => {
+  try {
+    const data = await manager.servicesForDevice(deviceId);
+    console.log(data);
+  } catch (error) {
+    console.log('Error checking device services: ', error);
+  }
+};
 
-function restore_state_function(restoredState) {
+const restoreStateIdentifier = 'ble_manager';
+
+function restoreStateFunction(restoredState) {
   if (restoredState !== null) {
-    const connected_peripherals = restoredState.connectedPeripherals;
-    for (let i = 0; i < connected_peripherals.length; i++) {
-      const peripheral = connected_peripherals[i];
+    const connectedPeripherals = restoredState.connectedPeripherals;
+    for (let i = 0; i < connectedPeripherals.length; i++) {
+      const peripheral = connectedPeripherals[i];
       console.log('Peripheral: ', peripheral.name, ' is still connected.');
       put({type: 'ACTION_ACTION', device: peripheral});
     }
@@ -95,12 +111,14 @@ function restore_state_function(restoredState) {
 }
 
 module.exports = {
-  get_known_devices,
-  connect_to_device,
-  cancel_device_connection,
-  discover_device_services_and_characteristics,
-  check_device_connection,
-  perform_device_transaction,
-  restore_state_identifier,
-  restore_state_function,
+  getKnownDevices,
+  devicesConnectedToSystem,
+  checkServices,
+  connectToDevice,
+  cancelDeviceConnection,
+  discoverDeviceServicesAndCharacteristics,
+  checkDeviceConnection,
+  performDeviceTransaction,
+  restoreStateIdentifier,
+  restoreStateFunction,
 };

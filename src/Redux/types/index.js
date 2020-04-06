@@ -1,6 +1,9 @@
 export const ADD_DEVICE = 'ADD_DEVICE';
 export const ADD_RETRIEVED_DEVICE = 'ADD_RETRIEVED_DEVICE'; // used when we pull devices out of storage
 export const REMOVE_DEVICE = 'REMOVE_DEVICE';
+export const KNOWN_DEVICE = 'KNOWN_DEVICE';
+export const UPDATE_KNOWN_DEVICE = 'UPDATE_KNOWN_DEVICE';
+export const SCAN = 'SCAN';
 export const UNKNOWN_DEVICE = 'UNKNOWN_DEVICE';
 export const CLEAR_UNKNOWN_DEVICES = 'CLEAR_UNKNOWN_DEVICES';
 export const CONNECTED_TO_DEVICE = 'CONNECTED_TO_DEVICE';

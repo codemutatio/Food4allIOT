@@ -18,15 +18,27 @@ const Device_Item = ({device}) => {
         onPress={go_to_device_page}>
         <Text> {device.name} </Text>
         <Text> {device.id} </Text>
-        <Text
-          style={{
-            backgroundColor: device.connected ? '#9ce66e' : '#c73e32',
-            width: 14,
-            height: 14,
-            borderRadius: 7,
-            marginTop: 5,
-          }}
-        />
+        {device[0] ? (
+          <Text
+            style={{
+              backgroundColor: device[0].connected ? '#9ce66e' : '#c73e32',
+              width: 14,
+              height: 14,
+              borderRadius: 7,
+              marginTop: 5,
+            }}
+          />
+        ) : (
+          <Text
+            style={{
+              backgroundColor: '#c73e32',
+              width: 14,
+              height: 14,
+              borderRadius: 7,
+              marginTop: 5,
+            }}
+          />
+        )}
       </TouchableOpacity>
     </View>
   );
